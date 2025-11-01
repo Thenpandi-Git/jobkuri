@@ -1,0 +1,44 @@
+package com.jobkuri.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jobkuri.DTO.CourseDTO;
+import com.jobkuri.Service.CourseService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/courses")
+@RequiredArgsConstructor
+public class CourseController {
+	
+	@Autowired
+	private CourseService courseService;
+	
+	
+	@PostMapping("/add/{adminId}")
+	public ResponseEntity<CourseDTO>addCourse(@RequestBody CourseDTO dto){
+		return ResponseEntity.ok(courseService.addCourse(dto));
+		
+	}
+	@GetMapping
+	public ResponseEntity<List<CourseDTO>>getCourse(){
+		return ResponseEntity.ok(courseService.gettAllActiveCourses());
+	}
+	@PutMapping("/deActivate/{id}")
+	public ResponseEntity<String>deactivateCourse(@PathVariable Long id){
+		courseService.deActiveCourse(id);
+		return ResponseEntity.ok("Course Deactivate successfully");
+	}
+
+}
